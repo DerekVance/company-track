@@ -1,6 +1,5 @@
 var express = require('express'),
-router = express.Router(),
-db = require('monk')(process.env.HOST)
+router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
