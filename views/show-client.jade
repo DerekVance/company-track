@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1 Client
+  div= client.first
+  div= client.last
+  div= client.street + ' ' + client.city + ' ' + client.state + ' ' + client.zip
+  div= client.phone
+  h1 Jobs
+  each job in client.jobs
+    div= job.type
+    div= job.crew
+  h1 New Job
+  if client.errors
+    for error in client.errors
+      div=error
+  form(action='/add-job/' + client._id method='post')
+    div
+      select(id='type' name='type')
+        option(value = 'none') Select Job type
+        option(value = 'land') Landscaping
+        option(value = 'tree') Tree Care
+    div
+      input(type='checkbox' name='employees' value='Johnny Works') 
+      | Johnny Works <br />
+      input(type='checkbox' name='employees' value='Jimmy Tryhard') 
+      | Jimmy Tryhard <br />
+      input(type='checkbox' name='employees' value='Becky Brokeit') 
+      | Becky Brokeit <br />
+      input(type='checkbox' name='employees' value='Rob Runsit') 
+      | Rob Runsit <br />
+      input(type='checkbox' name='employees' value='Lacey Lazey') 
+      | Lacey Lazey
+    div
+      input(type='submit' value='Add New Job')

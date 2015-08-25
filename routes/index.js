@@ -5,27 +5,24 @@ mongo = require('../lib/mongo');
 //one function per route
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Comapny Management Tool' });
-});
-
-router.get('/new', function(req, res, next) {
-  res.render('new', { title: 'Company Management Tool' });
+  res.render('index', { title: 'Company Management Tool' });
 });
 
 router.get('/show', function(req, res, next) {
-  res.render('show');
+  mongo.getAllClients().then(function(clients){
+  res.render('show', { clients: clients });
+  })
 });
+
+router.get('/show-client/:id', function(req, res, next){
+  mongo.getClient(req.params.id).then(function(client){
+    console.log(client);
+    res.render('show-client', {client: client})
+  })
+})
 
 router.get('/new-client', function(req, res, next){
   res.render('new-client');
-});
-
-router.get('/new-employee', function(req, res, next){
-res.render('new-employee');
-});
-
-router.get('/new-job', function(req, res, next){
-res.render('new-job');
 });
 
 router.get('/edit', function(req, res, next){
@@ -37,33 +34,20 @@ router.post('/new-client', function(req, res, next){
     if(errors === 'client inserted') {
       res.redirect('show');
     } else {
-      console.log(errors);
       res.render('new-client', { errors: errors });
     };
   });
 });
 
-router.post('/new-employee', function(req, res, next){
-  mongo.newEmployee(req.body).then(function(errors){
-    if(errors === 'employee inserted') {
-      res.redirect('show');
+router.post('/add-job/:id', function(req, res, next) {
+  mongo.newJob(req.body, req.params).then(function(client){
+    if(client === 'client updated'){
+      res.redirect('/show-client/' + req.params.id);
     } else {
-      console.log(errors);
-      res.render('new-employee', { errors: errors });
+      res.render('show-client', {client: client})
     }
   })
 })
-
-router.post('/new-job', function(req,res, next){
-  mongo.newJob(req.body).then(function(errors){
-    if(errors === 'job inserted') {
-      res.redirect('show');
-    } else {
-      console.log(errors);
-      res.render('new-job', { errors: errors });
-    }
-  })
-});
 
 router.post('/edit', function(req, res, next){
   res.redirect('show');
