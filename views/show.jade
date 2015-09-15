@@ -5,3 +5,9 @@ block content
   for client in clients 
     p
       a(href='show-client/' + client._id)= client.first + ' ' + client.last
+    for job in client.jobDescription
+      div Job Type
+      div= job.type
+      div Crew
+      div= job.crew.join(', ')
+      

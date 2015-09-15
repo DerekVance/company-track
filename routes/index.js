@@ -9,8 +9,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/show', function(req, res, next) {
-  mongo.getAllClients().then(function(clients){
-  res.render('show', { clients: clients });
+  mongo.getAllClientData().then(function(clients){
+    console.log(clients[0].jobDescription[1].crew)
+    res.render('show', { clients: clients });
   })
 });
 
